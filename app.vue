@@ -9,49 +9,40 @@ gsap.registerPlugin(Draggable)
 
 const selected = ref([]) // EMPTY ARRAY TO STORE THE CARDS CHOSEN (MAX 2)
 
-//ARRAY WITH THE CARDS, I GUESS THERE HAS TO BE A WAY TO PRINT TO TIMES THE SAME ARRAY RATHER THAN HAVING THE CARDS DUPLICATE
-const cards = reactive([{
-  id: "1",
-  interior: "https://placehold.co/100x150",
-  locked: false
-},
-{
-  id: "1",
-  interior: "https://placehold.co/100x150",
-  locked: false
-},
-{
-  id: "2",
-  interior: "https://placehold.co/100x150",
-  locked: false
-},
-{
-  id: "2",
-  interior: "https://placehold.co/100x150",
-  locked: false
-},
-{
-  id: "3",
-  interior: "https://placehold.co/100x150",
-  locked: false
-},
-{
-  id: "3",
-  interior: "https://placehold.co/100x150",
-  locked: false
-},
-]);
+// DRY !!!!!!!
 
+//ARRAY WITH THE CARDS, I GUESS THERE HAS TO BE A WAY TO PRINT TO TIMES THE SAME ARRAY RATHER THAN HAVING THE CARDS DUPLICATE
+const data = [{
+  id: "1",
+  interior: "https://picsum.photos/id/237/200/300",
+  locked: false,
+  flipped: false
+},
+{
+  id: "2",
+  interior: "https://picsum.photos/id/123/200/300",
+  locked: false,
+  flipped: false
+},
+{
+  id: "3",
+  interior: "https://picsum.photos/id/1/200/300",
+  locked: false,
+  flipped: false
+}
+];
+
+const card_array = [...data, ...data]
+
+const cards = ref(card_array)
 
 // const cardsDeal = 
 
 const flipCard = (index) => {
+  const card_array = cards.value
   // CHANGE flipped STATE --> onClick
-  cards[index].flipped = !cards[index].flipped
-
-
-
-  const card = cards[index]
+  card_array[index].flipped = !card_array[index].flipped
+  const card = card_array[index]
 
   // LOCK REST OF THE CARDS
   if (card.locked || selected.value.length >= 2) return
@@ -93,9 +84,7 @@ onMounted(() => {
     type: "x, y",
   });
 
-  Draggable.create("#card_container", {
-    type: "x, y",
-  });
+
 })
 </script>
 
@@ -105,13 +94,14 @@ onMounted(() => {
     <div class="aaa" id="yourID" style="width:30px;height:30px;background:red;"></div>
 
     <div class="cards_gallery">
-      <div v-for="(card, index) in cards" :key="index" id="card_container" class="card_container" @click="flipCard(index)">
+      <div v-for="(card, index) in cards" :key="index" id="card_container" class="card_container"
+        @click="flipCard(index)">
         <div id="card" :class="['card', { flipped: card.flipped }]">
           <div class="card_rear">
             <img src="https://placehold.co/100x150" alt="">
           </div>
           <div class="card_interior">
-            <img :src="card.interior" alt="interior">
+            <img :src="card.interior" alt="interior" style="width:100px">
           </div>
         </div>
         <p>{{ card.id }} {{ card.locked }}</p>
@@ -145,6 +135,7 @@ onMounted(() => {
         position: relative
         transform-style: preserve-3d 
         transition: transform 0.6s 
+        transform-origin: center center;
         .card_rear,
         .card_interior 
           position: absolute
