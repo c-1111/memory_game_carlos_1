@@ -12,12 +12,17 @@ onMounted(() => {
   Draggable.create("#app2", {
     type: "x, y",
   });
+  Draggable.create("#deck", {
+    type: 'x,y',
+    dragClickables: true,
+  })
 })
 </script>
 
 <template>
     <div class="app1" id="app1"></div>
     <div class="app2" id="app2"></div>
+    <div id="Memory" class="deck" @click="dealCards">Memory</div>
 </template>
 
 <style lang="sass">
