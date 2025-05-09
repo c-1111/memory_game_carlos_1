@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 const props = defineProps({
     resetGame: {
         type: Function,
@@ -10,6 +11,20 @@ const props = defineProps({
     }
 });
 
+
+const currentTime = ref(new Date())
+
+let timer = null
+
+onMounted(() => {
+    timer = setInterval(() => {
+        currentTime.value = new Date()
+    }, 1000) // 30 secondi
+})
+
+onBeforeUnmount(() => {
+    clearInterval(timer)
+})
 </script>
 
 <template>
@@ -34,13 +49,13 @@ const props = defineProps({
                     </svg>
                 </div>
                 <div class="nightmode_CTA">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="17" fill="none" viewBox="0 0 14 17">
-                    <path fill="#000"
-                        d="M10.136 15.727a8.235 8.235 0 0 1-3.166.236 8.14 8.14 0 0 1-2.869-.89 7.562 7.562 0 0 1-2.268-1.858 6.903 6.903 0 0 1-1.365-2.662A6.927 6.927 0 0 1 .32 7.564a7.55 7.55 0 0 1 1.035-2.742 8.153 8.153 0 0 1 2.038-2.207 8.206 8.206 0 0 1 2.861-1.377A8.5 8.5 0 0 1 8.319.946a7.999 7.999 0 0 1 2.06.235c-1.022.972-1.73 2.107-2.121 3.402a6.974 6.974 0 0 0-.063 3.9 6.988 6.988 0 0 0 2.005 3.344c.986.927 2.166 1.555 3.538 1.886a8.03 8.03 0 0 1-1.668 1.233 8.526 8.526 0 0 1-1.934.78Z" />
-                </svg>
-            </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="17" fill="none" viewBox="0 0 14 17">
+                        <path fill="#000"
+                            d="M10.136 15.727a8.235 8.235 0 0 1-3.166.236 8.14 8.14 0 0 1-2.869-.89 7.562 7.562 0 0 1-2.268-1.858 6.903 6.903 0 0 1-1.365-2.662A6.927 6.927 0 0 1 .32 7.564a7.55 7.55 0 0 1 1.035-2.742 8.153 8.153 0 0 1 2.038-2.207 8.206 8.206 0 0 1 2.861-1.377A8.5 8.5 0 0 1 8.319.946a7.999 7.999 0 0 1 2.06.235c-1.022.972-1.73 2.107-2.121 3.402a6.974 6.974 0 0 0-.063 3.9 6.988 6.988 0 0 0 2.005 3.344c.986.927 2.166 1.555 3.538 1.886a8.03 8.03 0 0 1-1.668 1.233 8.526 8.526 0 0 1-1.934.78Z" />
+                    </svg>
+                </div>
                 <div class="clock">
-                    <p>12:45 pm</p>
+                    <p>{{ currentTime.toLocaleTimeString() }}</p>
                 </div>
             </div>
         </div>

@@ -32,7 +32,11 @@ const { data: cards } = await useAsyncData('cards', () => {
     return shuffleArray(duplicated)
 })
 
+//UTILITY CLASS
+
+const isAnimating = ref(false);
 // DOM refs
+
 const startingPoint = ref(null)
 
 // Animation setup
@@ -44,7 +48,12 @@ onMounted(() => {
 })
 
 function initGame() {
+    if (isAnimating.value) {
+        return false;
+    }
+    isAnimating.value = true;
     resetGame()
+
     const position = startingPoint.value.getBoundingClientRect()
     const x_center = window.innerWidth / 2
     const y_center = window.innerHeight / 2
@@ -52,7 +61,11 @@ function initGame() {
     const y_origin = position.y
 
     gsap.set('.card_wrapper', { x: x_origin, y: y_origin, scale: 0.5, opacity: 0 })
-    gsap.to('.card_wrapper', { x: 0, y: 0, opacity: 1, stagger: 0.2, scale: 1, duration: 1, ease: 'power2.out' })
+    gsap.to('.card_wrapper', {
+        x: 0, y: 0, opacity: 1, stagger: 0.2, scale: 1, duration: 1, ease: 'power2.out', onComplete: () => {
+            isAnimating.value = false;
+        }
+    })
 }
 
 // Logic functions
@@ -162,9 +175,9 @@ function flipCard(index) {
             cursor: pointer
             .cards_container_card 
                 transform-style: preserve-3d 
-                transition: transform 0.6s 
+                transition: transform ease 0.6s 
                 &.flipped 
-                    transform: rotateY(180deg)
+                    transform: rotateY(180deg) scale(1.2)
                 &.locked 
                     opacity: .5
                     pointer-events: none
