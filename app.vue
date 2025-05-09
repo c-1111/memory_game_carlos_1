@@ -8,7 +8,13 @@ import Toolbar from './components/toolbar.vue'
 
 gsap.registerPlugin(Draggable)
 
+const startingPoint = ref(null);
+
 onMounted(() => {
+    Draggable.create("#startingPoint", {
+        type: "x, y",
+        dragClickables: true
+    });
     Draggable.create("#yourID", {
         type: "x, y",
         dragClickables: true
@@ -21,21 +27,40 @@ onMounted(() => {
 })
 
 //-------------------------------------------------------------------------------------------------------------------------------
-// ANIMATION OKEY 
+// ANIMATION OKEY
+
+const initGame = () => {
+    resetGame();
+    // GETTING THE POSITION OF THE ORIGIN ELEMENT - IF WE WRAP THIS INTO A FUNCTION WE CAN TRIGGER IT AFTER DRAG ETC.
+    const position = startingPoint.value.getBoundingClientRect();
+    // THIS FUNCTION EVERY TIME IT'S CALLED GETS THE ELEMENT COORDINATES
+    const x_center = window.innerWidth / 2
+    const y_center = window.innerHeight / 2
+    // HERE I'M GETTING THE CENTER OF THE PAGES IN PX. PROBLEM HERE IS THAT IF YOU RESIZE THE WINDOW THE COORDINATES NEEDS TO BE UPDATED
+    const x_origin = position.x - x_center
+    const y_origin = position.y
+
+
+
+    gsap.set('.card_wrapper', {
+        x: x_origin,
+        y: y_origin,
+        scale: .5,
+        opacity: 0
+    })
+    gsap.to('.card_wrapper', {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        stagger: 0.2,
+        scale: 1,
+        duration: 1,
+        ease: 'power2.out'
+    })
+}
+
 onMounted(() => {
-  gsap.set('.card_wrapper', {
-    x: window.innerWidth / 2 - 100,
-    y: window.innerHeight / 2 - 100,
-    opacity: 0
-  })
-  gsap.to('.card_wrapper', {
-    x: 0,
-    y: 0,
-    opacity: 1,
-    stagger: 0.2,
-    duration: 1,
-    ease: 'power2.out'
-  })
+    initGame();
 })
 //-------------------------------------------------------------------------------------------------------------------------------
 
@@ -69,6 +94,14 @@ const data_copy = structuredClone(data);
 const card_array = data.concat(data_copy);
 // HERE WE SHOULD SHUFFLE THE ARRAY
 
+const shuffleArray = (data_copy) => {
+    for (let i = card_array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [card_array[i], card_array[j]] = [card_array[j], card_array[i]];
+    }
+}
+shuffleArray(card_array)
+
 
 //-------------------------------------------------------------------------------------------------------------------------------
 // // SHUFFLE --> I am not understanding how this shuffles index and fucks up the game logic not touching the handle 
@@ -80,7 +113,7 @@ const card_array = data.concat(data_copy);
 //   return data_copy;
 // };
 
-// shuffleArray()
+// shuffleArray() => missing the parameter , shufflearray is a function and needs to know which array to shuffle 
 //-------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -128,9 +161,6 @@ const flipCard = function (index) {
         }, "1000");
 
     }
-    console.log("aaa");
-    console.log(data_copy);
-    console.log(card_array);
 
 
 }
@@ -139,6 +169,9 @@ const flipCard = function (index) {
 
 <template>
     <div class="app">
+        <div class="starting_point" ref="startingPoint" id="startingPoint" @click="initGame">
+
+        </div>
         <div class="cards_container">
             <div v-for="(card, index) in cards" :key="index" class="card_wrapper" id="draggable_card"
                 @click="flipCard(index)">
@@ -157,6 +190,16 @@ const flipCard = function (index) {
     </div>
 </template>
 
+<style lang="scss">
+.starting_point {
+    position: fixed;
+    bottom: 60px;
+    right: 60px;
+    width: 100px;
+    height: 100px;
+    background-color: Yellow;
+}
+</style>
 <style lang="sass">
 .app 
     height: 100vh
