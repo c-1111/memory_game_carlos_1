@@ -69,23 +69,59 @@ onMounted(() => {
 // THINK TOP DOWN 
 
 const data = [{
-    handle: "dog",
+    handle: "aaa",
     interior: "https://picsum.photos/id/237/200/300",
     locked: false,
     flipped: false
 },
 {
-    handle: "banana",
+    handle: "bbb",
     interior: "https://picsum.photos/id/123/200/300",
     locked: false,
     flipped: false
 },
 {
-    handle: "pear",
+    handle: "ccc",
     interior: "https://picsum.photos/id/1/200/300",
     locked: false,
     flipped: false
-}
+},
+{
+    handle: "ddd",
+    interior: "https://picsum.photos/id/1/200/300",
+    locked: false,
+    flipped: false
+},
+{
+    handle: "eee",
+    interior: "https://picsum.photos/id/1/200/300",
+    locked: false,
+    flipped: false
+},
+{
+    handle: "fff",
+    interior: "https://picsum.photos/id/1/200/300",
+    locked: false,
+    flipped: false
+},
+{
+    handle: "ggg",
+    interior: "https://picsum.photos/id/1/200/300",
+    locked: false,
+    flipped: false
+},
+{
+    handle: "hhh",
+    interior: "https://picsum.photos/id/1/200/300",
+    locked: false,
+    flipped: false
+},
+{
+    handle: "iii",
+    interior: "https://picsum.photos/id/1/200/300",
+    locked: false,
+    flipped: false
+},
 ];
 
 // DIFF BETWEEN CLONE ( copies as reference ) AND DEEPCLONE ( creates new objects also if duplicated )
@@ -141,7 +177,7 @@ const checkResults = function () {
     }
 }
 
-// LOOP TROUGHT THE ORIGINAL ARRAY AND RESET THE STATUS
+// LOOP TROUGHT THE ORIGINAL ARRAY AND RESET THE STATUS // not needed anymore ??
 const resetGame = function () {
     cards.value.forEach((el) => {
         el.locked = false;
@@ -170,14 +206,15 @@ const flipCard = function (index) {
 <template>
     <div class="app">
         <div class="starting_point" ref="startingPoint" id="startingPoint" @click="initGame">
-
+            <img src="/public/img/zip.png" alt="">
+            <p>MEMORY</p>
         </div>
         <div class="cards_container">
             <div v-for="(card, index) in cards" :key="index" class="card_wrapper" id="draggable_card"
                 @click="flipCard(index)">
                 <div class="card cards_container_card" :class="{ flipped: card.flipped, locked: card.locked }">
                     <div class="card_face card_back">
-                        <img src="https://placehold.co/100x150" alt="back" />
+                        <img src="/public/img/card.png" alt="back" />
                     </div>
                     <div class="card_face card_front">
                         <img :src="card.interior" alt="interior" />
@@ -186,18 +223,31 @@ const flipCard = function (index) {
             </div>
         </div>
         <OtherApps />
-        <Toolbar :resetGame="resetGame" />
+        <Toolbar :resetGame="resetGame" :initGame="initGame" />
     </div>
 </template>
 
 <style lang="scss">
 .starting_point {
     position: fixed;
-    bottom: 60px;
-    right: 60px;
-    width: 100px;
-    height: 100px;
-    background-color: Yellow;
+    bottom: 200px;
+    right: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+        height: 50px;
+        margin-bottom: .3rem
+
+    }
+
+    p {
+        font-family: Calibri;
+        font-weight: lighter;
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+    }
 }
 </style>
 <style lang="sass">
@@ -206,20 +256,21 @@ const flipCard = function (index) {
     background: #0867FF
     perspective: 1000px
     overflow: hidden
- 
+    display: flex
+    align-items: center
+    justify-content: center
+    padding-bottom: 10rem
     .cards_container 
         margin: auto
         display: grid
-        grid-template-columns: 1fr 1fr 1fr
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 
         gap: 2rem
-        max-width: 40vw
         .card_wrapper
             width: 100px
             height: 150px 
             text-align: center
             flex: 0 0 100px
             padding: 4px
-            border: 1px solid Red
             position: relative
             cursor: pointer
             .cards_container_card 
@@ -244,7 +295,6 @@ const flipCard = function (index) {
                     align-items: center
                     justify-content: center                  
                 .card_back 
-                    background: white
                     img
                         width: 100%
                         height: 100%
