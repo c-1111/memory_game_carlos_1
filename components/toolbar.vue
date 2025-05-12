@@ -19,7 +19,7 @@ let timer = null
 onMounted(() => {
     timer = setInterval(() => {
         currentTime.value = new Date()
-    }, 1000) // 30 secondi
+    }, 1000)
 })
 
 onBeforeUnmount(() => {

@@ -18,15 +18,15 @@ function shuffleArray(array) {
 // Fetch data and shuffle server-side
 const { data: cards } = await useAsyncData('cards', () => {
     const baseData = [
-        { handle: "aaa", interior: "https://picsum.photos/id/237/200/300", locked: false, flipped: false },
-        { handle: "bbb", interior: "https://picsum.photos/id/10/200/300", locked: false, flipped: false },
-        { handle: "ccc", interior: "https://picsum.photos/id/1/200/300", locked: false, flipped: false },
-        { handle: "ddd", interior: "https://picsum.photos/id/2/200/300", locked: false, flipped: false },
-        { handle: "eee", interior: "https://picsum.photos/id/3/200/300", locked: false, flipped: false },
-        { handle: "fff", interior: "https://picsum.photos/id/4/200/300", locked: false, flipped: false },
-        { handle: "ggg", interior: "https://picsum.photos/id/5/200/300", locked: false, flipped: false },
-        { handle: "hhh", interior: "https://picsum.photos/id/6/200/300", locked: false, flipped: false },
-        { handle: "iii", interior: "https://picsum.photos/id/7/200/300", locked: false, flipped: false },
+        { handle: "aaa", interior: "/img/1.gif", locked: false, flipped: false },
+        { handle: "bbb", interior: "/img/(2).gif", locked: false, flipped: false },
+        { handle: "ccc", interior: "/img/(3).gif", locked: false, flipped: false },
+        { handle: "ddd", interior: "/img/(4).gif", locked: false, flipped: false },
+        { handle: "eee", interior: "/img/(5).gif", locked: false, flipped: false },
+        { handle: "fff", interior: "/img/(6).gif", locked: false, flipped: false },
+        { handle: "ggg", interior: "/img/(7).gif", locked: false, flipped: false },
+        { handle: "hhh", interior: "/img/(8).gif", locked: false, flipped: false },
+        { handle: "iii", interior: "/img/(9).gif", locked: false, flipped: false },
     ]
     const duplicated = baseData.concat(structuredClone(baseData))
     return shuffleArray(duplicated)
@@ -179,7 +179,7 @@ function flipCard(index) {
                 &.flipped 
                     transform: rotateY(180deg) scale(1.2)
                 &.locked 
-                    opacity: .5
+                    opacity: 0
                     pointer-events: none
             .card 
                 width: 100%
@@ -200,10 +200,13 @@ function flipCard(index) {
                         height: 100%
                         object-fit: cover
                 .card_front 
-                    background: white
+                    //background: white
                     transform: rotateY(180deg) 
                     img
+                        //width: 100%
+                        //height: 100%
                         width: 100%
-                        height: 100%
-                        object-fit: cover
+                        height: auto
+                        display: block
+                        object-fit: contain
 </style>
