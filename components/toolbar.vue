@@ -101,6 +101,7 @@ onBeforeUnmount(() => {
                     background: #E6E6E6
                     padding-inline: .6rem
                 .clock
+                    min-width: 80px
                     display: flex
                     align-items: center
                     background: #E6E6E6
